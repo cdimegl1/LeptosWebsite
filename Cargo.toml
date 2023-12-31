@@ -1,0 +1,50 @@
+[package]
+name = "website"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-files = { version = "0.6.2", optional = true }
+actix-web = { version = "4.3.1", optional = true }
+async-trait = "0.1.72"
+cfg-if = "1.0.0"
+chrono = { version = "0.4.26", features = ["serde"] }
+console_error_panic_hook = "0.1.7"
+console_log = "1.0.0"
+leptos = { version = "0.4.5", features = ["nightly", "serde"] }
+leptos-struct-table = { version = "0.3.2", features = ["chrono"] }
+leptos_actix = { version = "0.4.5", optional = true }
+leptos_meta = { version = "0.4.5", features = ["nightly"] }
+leptos_router = { version = "0.4.5", features = ["nightly"] }
+log = "0.4.19"
+num-traits = "0.2.16"
+serde = { version = "1.0.173", features = ["derive"] }
+sqlx = { version = "0.7.1", features = ["sqlite", "runtime-tokio-rustls", "chrono"], optional = true }
+wasm-bindgen = "0.2.87"
+web-sys = { version = "0.3.64", features = ["ScrollRestoration"] }
+
+[features]
+hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
+ssr = [
+	"dep:actix-files",
+	"dep:actix-web",
+	"dep:leptos_actix",
+	"leptos/ssr",
+	"leptos_meta/ssr",
+	"leptos_router/ssr",
+	"sqlx"
+]
+
+[package.metadata.leptos]
+output-name = "website"
+site-addr = "127.0.0.1:42069"
+site-root = "target/site"
+site-pkg-dir = "pkg"
+bin-features = ["ssr"]
+lib-features = ["hydrate"]
+
